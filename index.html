@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+<title>MorningShift</title>
+
+<!-- PWA / iPhoneホーム画面用 -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="MorningShift" />
+<meta name="theme-color" content="#0a0f28" />
+<link rel="apple-touch-icon" href="./icon-180.png" />
+<link rel="icon" href="./favicon-32.png" />
+<link rel="manifest" href="./manifest.json" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+
+<style>
+  :root{
+    --ink:#FDF6EC; --ink-dim:rgba(253,246,236,.62); --ink-faint:rgba(253,246,236,.40);
+    --card:rgba(253,246,236,.08); --card-line:rgba(253,246,236,.14);
+    --gold:#F5C26B; --rose:#E8896B; --indigo:#1E2A5E;
+    --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:var(--body); color:var(--ink);
+    background:#060819; overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  #root{min-height:100%}
+  .app{
+    min-height:100dvh; max-width:480px; margin:0 auto; position:relative;
+    transition:background 1.2s ease;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 88px);
+  }
+  /* 週ごとの夜明けグラデーション（第1週=深夜 → 第5週=日の出） */
+  .w1{background:linear-gradient(180deg,#060819 0%,#0e1430 55%,#1a1f44 100%)}
+  .w2{background:linear-gradient(180deg,#0a0f28 0%,#1a1f4a 55%,#2e2a5e 100%)}
+  .w3{background:linear-gradient(180deg,#131a40 0%,#3a2f63 55%,#6a4570 100%)}
+  .w4{background:linear-gradient(180deg,#241f4a 0%,#6b3f6e 60%,#c06a5f 100%)}
+  .w5{background:linear-gradient(180deg,#33285c 0%,#9a4f63 45%,#e8896b 78%,#f5c26b 100%)}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+  .wordmark{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:.2px}
+  .wordmark b{color:var(--gold);font-weight:600}
+  .gear{background:none;border:none;color:var(--ink-dim);font-size:20px;cursor:pointer;padding:4px;line-height:1}
+
+  /* ヒーロー：昇る太陽＋フェーズ */
+  .hero{position:relative;text-align:center;padding:8px 0 4px}
+  .sun{
+    width:54px;height:54px;border-radius:50%;margin:0 auto 14px;
+    background:radial-gradient(circle at 50% 45%,#fff6dd 0%,#ffe9b0 55%,rgba(245,194,107,0) 72%);
+    transition:transform 1s ease, filter 1s ease;
+  }
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  .phase{font-family:var(--display);font-size:40px;font-weight:600;line-height:1.05;margin-top:4px}
+  .phase span{color:var(--gold)}
+  .dayline{font-size:12px;color:var(--ink-dim);margin-top:8px}
+  .track{height:5px;border-radius:99px;background:rgba(253,246,236,.12);margin:12px auto 0;max-width:230px;overflow:hidden}
+  .track i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--gold));border-radius:99px;transition:width 1s ease}
+
+  /* 就寝/起床カード */
+  .times{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0}
+  .tcard{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:20px 14px;text-align:center;backdrop-filter:blur(8px)}
+  .tcard .lab{font-size:12px;color:var(--ink-dim);font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px}
+  .tcard .val{font-family:var(--display);font-size:38px;font-weight:600;line-height:1.1;margin-top:8px;font-variant-numeric:tabular-nums}
+
+  .card{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:18px;backdrop-filter:blur(8px)}
+  .advice{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}
+  .advice .ic{font-size:20px;flex:none;margin-top:1px}
+  .advice .h{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  .advice .t{font-size:15px;font-weight:500;line-height:1.5;margin-top:4px}
+
+  .sec-h{font-family:var(--display);font-size:18px;font-weight:600;margin:0 2px 12px}
+  .routine{display:flex;flex-direction:column;gap:4px}
+  .ritem{display:flex;align-items:center;gap:13px;padding:13px 4px;cursor:pointer;border-bottom:1px solid rgba(253,246,236,.07)}
+  .ritem:last-child{border-bottom:none}
+  .check{width:24px;height:24px;border-radius:8px;border:2px solid rgba(253,246,236,.35);flex:none;display:flex;align-items:center;justify-content:center;transition:.2s}
+  .check.on{background:var(--gold);border-color:var(--gold);color:#3a2300}
+  .check svg{width:14px;height:14px}
+  .ritem .lbl{font-size:15px;transition:.2s}
+  .ritem.done .lbl{color:var(--ink-faint);text-decoration:line-through}
+
+  /* スケジュール */
+  .srow{display:flex;gap:14px;align-items:center;padding:16px;border-radius:18px;border:1px solid var(--card-line);background:var(--card);margin-bottom:10px}
+  .srow.now{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+  .snum{font-family:var(--display);font-size:15px;font-weight:600;color:var(--gold);width:40px;flex:none}
+  .snum small{display:block;font-family:var(--body);font-size:10px;color:var(--ink-faint);font-weight:600;letter-spacing:1px;margin-bottom:2px}
+  .sbody{flex:1;min-width:0}
+  .stimes{display:flex;gap:14px;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+  .stimes .b{color:#cdbcff}.stimes .w{color:var(--gold)}
+  .sadv{font-size:12.5px;color:var(--ink-dim);margin-top:5px;line-height:1.45}
+  .nowtag{font-size:10px;font-weight:700;color:#3a2300;background:var(--gold);padding:2px 7px;border-radius:99px;letter-spacing:.5px}
+
+  /* タブバー */
+  .tabbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    max-width:480px;margin:0 auto;
+    display:grid;grid-template-columns:1fr 1fr;
+    padding:8px 24px calc(env(safe-area-inset-bottom) + 10px);
+    background:rgba(8,10,24,.72);backdrop-filter:blur(16px);
+    border-top:1px solid rgba(253,246,236,.10);
+  }
+  .tab{background:none;border:none;color:var(--ink-faint);font-family:var(--body);font-size:11px;font-weight:600;
+    display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;cursor:pointer;transition:.2s}
+  .tab.active{color:var(--gold)}
+  .tab svg{width:23px;height:23px}
+
+  /* 設定シート */
+  .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+  .sheet{width:100%;max-width:480px;background:#141a36;border-radius:24px 24px 0 0;padding:24px 22px calc(env(safe-area-inset-bottom) + 26px);border-top:1px solid var(--card-line)}
+  .sheet h3{font-family:var(--display);font-size:19px;font-weight:600;margin-bottom:4px}
+  .sheet p{font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.5}
+  .btn{display:block;width:100%;border:none;border-radius:14px;padding:14px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;margin-top:10px}
+  .btn.primary{background:var(--gold);color:#3a2300}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--card-line)}
+  .nudge{display:flex;gap:10px;margin-top:10px}
+  .nudge .btn{margin-top:0}
+  .closebar{width:38px;height:4px;border-radius:99px;background:rgba(253,246,236,.25);margin:0 auto 18px}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const {useState, useEffect} = React;
+
+/* ---------- データ（5週間ハードコード） ---------- */
+const PLANS = [
+  {week:1, bed:"0:15",  wake:"8:45", advice:"起床後すぐに朝日を浴びる"},
+  {week:2, bed:"23:30", wake:"8:00", advice:"寝る前に温かいノンカフェインドリンクを飲む"},
+  {week:3, bed:"22:45", wake:"7:15", advice:"21時過ぎに湯船に浸かる"},
+  {week:4, bed:"22:15", wake:"6:30", advice:"朝の楽しみ・ご褒美を用意する"},
+  {week:5, bed:"22:00", wake:"6:00", advice:"週末も同じ時間に起きる"},
+];
+const ROUTINES = [
+  "カモミールティーを飲む",
+  "ぬるめのお風呂に入る",
+  "就寝1時間前にスマホを置く",
+  "部屋を暗くする",
+  "軽くストレッチをする",
+];
+
+/* ---------- 保存（localStorage、不可ならメモリにフォールバック） ---------- */
+const mem = {};
+const store = {
+  get(k, def){ try{ const v=localStorage.getItem(k); return v==null?def:JSON.parse(v);}catch(e){ return (k in mem)?mem[k]:def; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){ mem[k]=v; } },
+};
+
+/* ---------- 日付ヘルパ ---------- */
+const dayKey = (d=new Date())=>{ const z=new Date(d); z.setHours(0,0,0,0);
+  return z.getFullYear()+"-"+String(z.getMonth()+1).padStart(2,"0")+"-"+String(z.getDate()).padStart(2,"0"); };
+const startOfDay = d=>{ const z=new Date(d); z.setHours(0,0,0,0); return z; };
+const daysBetween = (a,b)=> Math.round((startOfDay(b)-startOfDay(a))/86400000);
+
+/* ---------- アイコン ---------- */
+const Check = ()=>(<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const HomeIc = ({a})=>(<svg viewBox="0 0 24 24" fill={a?"currentColor":"none"} stroke="currentColor" strokeWidth="2"><path d="M3 11l9-8 9 8M5 10v10h14V10" strokeLinejoin="round"/></svg>);
+const CalIc = ({a})=>(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="16" rx="3" fill={a?"currentColor":"none"}/><path d="M3 9h18M8 3v4M16 3v4" strokeLinecap="round"/></svg>);
+
+/* ---------- ホーム ---------- */
+function Dashboard({plan, weekIdx, dayNo, onOpenSettings}){
+  const [checks, setChecks] = useState(()=> store.get("routine:"+dayKey(), Array(ROUTINES.length).fill(false)));
+  useEffect(()=>{ store.set("routine:"+dayKey(), checks); }, [checks]);
+  const toggle = i => setChecks(c => c.map((v,j)=> j===i ? !v : v));
+  const doneCount = checks.filter(Boolean).length;
+
+  return (
+    <div>
+      <div className="topbar">
+        <div className="wordmark">Morning<b>Shift</b></div>
+        <button className="gear" onClick={onOpenSettings} aria-label="設定">⚙︎</button>
+      </div>
+
+      <div className="hero">
+        <div className="sun" style={{transform:`translateY(${(5-weekIdx)*7}px) scale(${0.8+weekIdx*0.05})`,
+             filter:`brightness(${0.85+weekIdx*0.06})`}}/>
+        <div className="eyebrow">Phase</div>
+        <div className="phase">第<span>{weekIdx}</span>週<span style={{fontSize:'24px'}}> / 5</span></div>
+        <div className="dayline">プログラム {dayNo} 日目 ・ 全35日</div>
+        <div className="track"><i style={{width:`${Math.min(dayNo/35*100,100)}%`}}/></div>
+      </div>
+
+      <div className="times">
+        <div className="tcard">
+          <div className="lab">🌙 目標就寝</div>
+          <div className="val">{plan.bed}</div>
+        </div>
+        <div className="tcard">
+          <div className="lab">☀️ 目標起床</div>
+          <div className="val">{plan.wake}</div>
+        </div>
+      </div>
+
+      <div className="card advice">
+        <div className="ic">💡</div>
+        <div>
+          <div className="h">今週のアドバイス</div>
+          <div className="t">{plan.advice}</div>
+        </div>
+      </div>
+
+      <div style={{marginTop:22}}>
+        <div className="sec-h">今夜のルーティン　<span style={{fontFamily:'var(--body)',fontSize:13,color:'var(--ink-dim)',fontWeight:500}}>{doneCount}/{ROUTINES.length}</span></div>
+        <div className="card routine">
+          {ROUTINES.map((r,i)=>(
+            <div key={i} className={"ritem"+(checks[i]?" done":"")} onClick={()=>toggle(i)}>
+              <div className={"check"+(checks[i]?" on":"")}>{checks[i] && <Check/>}</div>
+              <div className="lbl">{r}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- スケジュール ---------- */
+function Schedule({weekIdx}){
+  return (
+    <div>
+      <div className="topbar"><div className="wordmark">5週間プラン</div></div>
+      {PLANS.map(p=>(
+        <div key={p.week} className={"srow"+(p.week===weekIdx?" now":"")}>
+          <div className="snum"><small>WEEK</small>{p.week}</div>
+          <div className="sbody">
+            <div className="stimes"><span className="b">🌙 {p.bed}</span><span className="w">☀️ {p.wake}</span></div>
+            <div className="sadv">{p.advice}</div>
+          </div>
+          {p.week===weekIdx && <div className="nowtag">今週</div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ---------- 設定シート ---------- */
+function Settings({startISO, onSet, onClose}){
+  const start = new Date(startISO);
+  const dayNo = daysBetween(start, new Date())+1;
+  const fmt = d => `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+  const shift = days => { const d=new Date(startISO); d.setDate(d.getDate()+days); onSet(startOfDay(d).toISOString()); };
+  return (
+    <div className="sheet-bg" onClick={onClose}>
+      <div className="sheet" onClick={e=>e.stopPropagation()}>
+        <div className="closebar"/>
+        <h3>プログラム設定</h3>
+        <p>開始日：{fmt(start)}（現在 {dayNo} 日目 / 第{Math.min(Math.max(Math.floor((dayNo-1)/7)+1,1),5)}週）<br/>
+        週は開始日からの経過日数で自動更新されます。</p>
+        <button className="btn primary" onClick={()=>{ onSet(startOfDay(new Date()).toISOString()); onClose(); }}>今日から再スタート</button>
+        <div className="nudge">
+          <button className="btn ghost" onClick={()=>shift(7)}>← 開始を1週遅らせる</button>
+          <button className="btn ghost" onClick={()=>shift(-7)}>1週進める（確認用）→</button>
+        </div>
+        <button className="btn ghost" style={{marginTop:14}} onClick={onClose}>閉じる</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- ルート ---------- */
+function App(){
+  const [tab, setTab] = useState("home");
+  const [showSet, setShowSet] = useState(false);
+  const [startISO, setStartISO] = useState(()=>{
+    let s = store.get("startDate", null);
+    if(!s){ s = startOfDay(new Date()).toISOString(); store.set("startDate", s); }
+    return s;
+  });
+  const setStart = iso => { setStartISO(iso); store.set("startDate", iso); };
+
+  const dayNo = Math.max(daysBetween(new Date(startISO), new Date())+1, 1);
+  const weekIdx = Math.min(Math.max(Math.floor((dayNo-1)/7)+1, 1), PLANS.length);
+  const plan = PLANS[weekIdx-1];
+
+  return (
+    <div className={"app w"+weekIdx}>
+      {tab==="home"
+        ? <Dashboard plan={plan} weekIdx={weekIdx} dayNo={dayNo} onOpenSettings={()=>setShowSet(true)}/>
+        : <Schedule weekIdx={weekIdx}/>}
+
+      <nav className="tabbar">
+        <button className={"tab"+(tab==="home"?" active":"")} onClick={()=>setTab("home")}>
+          <HomeIc a={tab==="home"}/>ホーム
+        </button>
+        <button className={"tab"+(tab==="schedule"?" active":"")} onClick={()=>setTab("schedule")}>
+          <CalIc a={tab==="schedule"}/>スケジュール
+        </button>
+      </nav>
+
+      {showSet && <Settings startISO={startISO} onSet={setStart} onClose={()=>setShowSet(false)}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+/* Service Worker（オフライン対応・配信時のみ有効） */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
+}
+</script>
+</body>
+</html>
