@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
 <title>MorningShift</title>
 
-<!-- PWA / iPhoneホーム画面用 -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -27,69 +26,108 @@
   :root{
     --ink:#FDF6EC; --ink-dim:rgba(253,246,236,.62); --ink-faint:rgba(253,246,236,.40);
     --card:rgba(253,246,236,.08); --card-line:rgba(253,246,236,.14);
-    --gold:#F5C26B; --rose:#E8896B; --indigo:#1E2A5E;
+    --gold:#F5C26B; --rose:#E8896B; --green:#7BD389;
     --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
-  body{
-    font-family:var(--body); color:var(--ink);
-    background:#060819; overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{font-family:var(--body);color:var(--ink);background:#060819;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   #root{min-height:100%}
-  .app{
-    min-height:100dvh; max-width:480px; margin:0 auto; position:relative;
-    transition:background 1.2s ease;
-    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 88px);
-  }
-  /* 週ごとの夜明けグラデーション（第1週=深夜 → 第5週=日の出） */
+  .app{min-height:100dvh;max-width:480px;margin:0 auto;position:relative;transition:background 1.2s ease;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 92px)}
   .w1{background:linear-gradient(180deg,#060819 0%,#0e1430 55%,#1a1f44 100%)}
   .w2{background:linear-gradient(180deg,#0a0f28 0%,#1a1f4a 55%,#2e2a5e 100%)}
   .w3{background:linear-gradient(180deg,#131a40 0%,#3a2f63 55%,#6a4570 100%)}
   .w4{background:linear-gradient(180deg,#241f4a 0%,#6b3f6e 60%,#c06a5f 100%)}
   .w5{background:linear-gradient(180deg,#33285c 0%,#9a4f63 45%,#e8896b 78%,#f5c26b 100%)}
 
-  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
-  .wordmark{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:.2px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+  .wordmark{font-family:var(--display);font-weight:600;font-size:19px}
   .wordmark b{color:var(--gold);font-weight:600}
   .gear{background:none;border:none;color:var(--ink-dim);font-size:20px;cursor:pointer;padding:4px;line-height:1}
 
-  /* ヒーロー：昇る太陽＋フェーズ */
-  .hero{position:relative;text-align:center;padding:8px 0 4px}
-  .sun{
-    width:54px;height:54px;border-radius:50%;margin:0 auto 14px;
+  .hero{position:relative;text-align:center;padding:6px 0 2px}
+  .sun{width:52px;height:52px;border-radius:50%;margin:0 auto 12px;
     background:radial-gradient(circle at 50% 45%,#fff6dd 0%,#ffe9b0 55%,rgba(245,194,107,0) 72%);
-    transition:transform 1s ease, filter 1s ease;
-  }
+    transition:transform 1s ease, filter 1s ease}
   .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
-  .phase{font-family:var(--display);font-size:40px;font-weight:600;line-height:1.05;margin-top:4px}
+  .phase{font-family:var(--display);font-size:38px;font-weight:600;line-height:1.05;margin-top:4px}
   .phase span{color:var(--gold)}
-  .dayline{font-size:12px;color:var(--ink-dim);margin-top:8px}
-  .track{height:5px;border-radius:99px;background:rgba(253,246,236,.12);margin:12px auto 0;max-width:230px;overflow:hidden}
+  .dayline{font-size:12px;color:var(--ink-dim);margin-top:7px}
+  .track{height:5px;border-radius:99px;background:rgba(253,246,236,.12);margin:11px auto 0;max-width:230px;overflow:hidden}
   .track i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--gold));border-radius:99px;transition:width 1s ease}
 
-  /* 就寝/起床カード */
-  .times{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0}
-  .tcard{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:20px 14px;text-align:center;backdrop-filter:blur(8px)}
-  .tcard .lab{font-size:12px;color:var(--ink-dim);font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px}
-  .tcard .val{font-family:var(--display);font-size:38px;font-weight:600;line-height:1.1;margin-top:8px;font-variant-numeric:tabular-nums}
+  .times{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 10px}
+  .tcard{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:18px 14px;text-align:center;backdrop-filter:blur(8px)}
+  .tcard .lab{font-size:12px;color:var(--ink-dim);font-weight:500}
+  .tcard .val{font-family:var(--display);font-size:36px;font-weight:600;line-height:1.1;margin-top:7px;font-variant-numeric:tabular-nums}
+  .countdown{text-align:center;font-size:13px;color:var(--ink-dim);margin-bottom:18px}
+  .countdown b{color:var(--gold);font-weight:600}
 
-  .card{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:18px;backdrop-filter:blur(8px)}
-  .advice{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}
+  .card{background:var(--card);border:1px solid var(--card-line);border-radius:20px;padding:18px;backdrop-filter:blur(8px);margin-bottom:16px}
+  .sec-h{font-family:var(--display);font-size:18px;font-weight:600;margin:0 2px 12px;display:flex;align-items:center;justify-content:space-between}
+  .sec-h .mini{font-family:var(--body);font-size:13px;color:var(--ink-dim);font-weight:500}
+  .editbtn{background:none;border:1px solid var(--card-line);color:var(--ink-dim);font-family:var(--body);font-size:12px;font-weight:600;border-radius:99px;padding:5px 12px;cursor:pointer}
+
+  .advice{display:flex;gap:12px;align-items:flex-start}
   .advice .ic{font-size:20px;flex:none;margin-top:1px}
   .advice .h{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
   .advice .t{font-size:15px;font-weight:500;line-height:1.5;margin-top:4px}
 
-  .sec-h{font-family:var(--display);font-size:18px;font-weight:600;margin:0 2px 12px}
-  .routine{display:flex;flex-direction:column;gap:4px}
-  .ritem{display:flex;align-items:center;gap:13px;padding:13px 4px;cursor:pointer;border-bottom:1px solid rgba(253,246,236,.07)}
+  /* アラームカード */
+  .alarm .row{display:flex;align-items:center;gap:12px}
+  .alarm .clock{font-size:24px}
+  .alarm .big{font-family:var(--display);font-size:22px;font-weight:600;color:var(--gold)}
+  .alarm p{font-size:12.5px;color:var(--ink-dim);line-height:1.5;margin:12px 0}
+  .btn{display:block;width:100%;border:none;border-radius:14px;padding:13px;font-family:var(--body);font-size:14.5px;font-weight:600;cursor:pointer}
+  .btn.primary{background:var(--gold);color:#3a2300}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--card-line)}
+
+  /* ルーティン */
+  .routine{display:flex;flex-direction:column;gap:2px}
+  .ritem{display:flex;align-items:center;gap:13px;padding:12px 4px;cursor:pointer;border-bottom:1px solid rgba(253,246,236,.07)}
   .ritem:last-child{border-bottom:none}
   .check{width:24px;height:24px;border-radius:8px;border:2px solid rgba(253,246,236,.35);flex:none;display:flex;align-items:center;justify-content:center;transition:.2s}
   .check.on{background:var(--gold);border-color:var(--gold);color:#3a2300}
   .check svg{width:14px;height:14px}
-  .ritem .lbl{font-size:15px;transition:.2s}
+  .ritem .lbl{font-size:15px;flex:1}
   .ritem.done .lbl{color:var(--ink-faint);text-decoration:line-through}
+  /* 編集モード */
+  .erow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(253,246,236,.07)}
+  .erow input{flex:1;background:rgba(0,0,0,.2);border:1px solid var(--card-line);color:var(--ink);border-radius:10px;padding:9px 11px;font-family:var(--body);font-size:14px}
+  .icobtn{background:rgba(253,246,236,.08);border:1px solid var(--card-line);color:var(--ink-dim);width:32px;height:32px;border-radius:9px;font-size:15px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center}
+  .icobtn.del{color:#ff9a8a}
+  .addrow{display:flex;gap:8px;margin-top:12px}
+  .addrow input{flex:1;background:rgba(0,0,0,.2);border:1px solid var(--card-line);color:var(--ink);border-radius:10px;padding:10px 12px;font-family:var(--body);font-size:14px}
+  .addrow button{background:var(--gold);color:#3a2300;border:none;border-radius:10px;padding:0 16px;font-weight:700;font-size:18px;cursor:pointer}
+
+  /* 達成記録 */
+  .streak{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .streak .flame{font-size:26px}
+  .streak .n{font-family:var(--display);font-size:26px;font-weight:600;color:var(--gold)}
+  .streak .t{font-size:12.5px;color:var(--ink-dim);line-height:1.3}
+  .ach{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .achbtn{border:1px solid var(--card-line);background:rgba(0,0,0,.15);border-radius:14px;padding:13px 8px;text-align:center;cursor:pointer;transition:.2s}
+  .achbtn .e{font-size:20px}
+  .achbtn .l{font-size:12.5px;color:var(--ink-dim);margin-top:5px;font-weight:500}
+  .achbtn.on{background:rgba(123,211,137,.16);border-color:var(--green)}
+  .achbtn.on .l{color:var(--green)}
+
+  /* 進捗グリッド */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .stat{background:var(--card);border:1px solid var(--card-line);border-radius:18px;padding:16px;text-align:center}
+  .stat .n{font-family:var(--display);font-size:30px;font-weight:600}
+  .stat .n.g{color:var(--gold)}
+  .stat .l{font-size:11.5px;color:var(--ink-dim);margin-top:3px}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .cell{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;border:1px solid transparent}
+  .cell.future{background:rgba(253,246,236,.05);color:var(--ink-faint)}
+  .cell.miss{background:rgba(253,246,236,.06);color:var(--ink-faint)}
+  .cell.hit{background:linear-gradient(135deg,var(--rose),var(--gold));color:#3a2300}
+  .cell.today{border-color:var(--gold);color:var(--gold);background:rgba(245,194,107,.10)}
+  .legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-size:11.5px;color:var(--ink-dim)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:4px}
 
   /* スケジュール */
   .srow{display:flex;gap:14px;align-items:center;padding:16px;border-radius:18px;border:1px solid var(--card-line);background:var(--card);margin-bottom:10px}
@@ -100,33 +138,25 @@
   .stimes{display:flex;gap:14px;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
   .stimes .b{color:#cdbcff}.stimes .w{color:var(--gold)}
   .sadv{font-size:12.5px;color:var(--ink-dim);margin-top:5px;line-height:1.45}
-  .nowtag{font-size:10px;font-weight:700;color:#3a2300;background:var(--gold);padding:2px 7px;border-radius:99px;letter-spacing:.5px}
+  .nowtag{font-size:10px;font-weight:700;color:#3a2300;background:var(--gold);padding:2px 7px;border-radius:99px}
 
-  /* タブバー */
-  .tabbar{
-    position:fixed;left:0;right:0;bottom:0;z-index:20;
-    max-width:480px;margin:0 auto;
-    display:grid;grid-template-columns:1fr 1fr;
-    padding:8px 24px calc(env(safe-area-inset-bottom) + 10px);
-    background:rgba(8,10,24,.72);backdrop-filter:blur(16px);
-    border-top:1px solid rgba(253,246,236,.10);
-  }
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;max-width:480px;margin:0 auto;
+    display:grid;grid-template-columns:1fr 1fr 1fr;padding:8px 16px calc(env(safe-area-inset-bottom) + 10px);
+    background:rgba(8,10,24,.72);backdrop-filter:blur(16px);border-top:1px solid rgba(253,246,236,.10)}
   .tab{background:none;border:none;color:var(--ink-faint);font-family:var(--body);font-size:11px;font-weight:600;
     display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;cursor:pointer;transition:.2s}
   .tab.active{color:var(--gold)}
-  .tab svg{width:23px;height:23px}
+  .tab svg{width:22px;height:22px}
 
-  /* 設定シート */
   .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center}
-  .sheet{width:100%;max-width:480px;background:#141a36;border-radius:24px 24px 0 0;padding:24px 22px calc(env(safe-area-inset-bottom) + 26px);border-top:1px solid var(--card-line)}
+  .sheet{width:100%;max-width:480px;background:#141a36;border-radius:24px 24px 0 0;padding:22px 22px calc(env(safe-area-inset-bottom) + 26px);border-top:1px solid var(--card-line);max-height:88vh;overflow-y:auto}
   .sheet h3{font-family:var(--display);font-size:19px;font-weight:600;margin-bottom:4px}
-  .sheet p{font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.5}
-  .btn{display:block;width:100%;border:none;border-radius:14px;padding:14px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;margin-top:10px}
-  .btn.primary{background:var(--gold);color:#3a2300}
-  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--card-line)}
+  .sheet p{font-size:13px;color:var(--ink-dim);margin-bottom:16px;line-height:1.5}
+  .sheet .btn{margin-top:10px}
   .nudge{display:flex;gap:10px;margin-top:10px}
   .nudge .btn{margin-top:0}
-  .closebar{width:38px;height:4px;border-radius:99px;background:rgba(253,246,236,.25);margin:0 auto 18px}
+  .divider{height:1px;background:var(--card-line);margin:20px 0}
+  .closebar{width:38px;height:4px;border-radius:99px;background:rgba(253,246,236,.25);margin:0 auto 16px}
   @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head>
@@ -134,9 +164,9 @@
 <div id="root"></div>
 
 <script type="text/babel">
-const {useState, useEffect} = React;
+const {useState, useEffect, useRef} = React;
 
-/* ---------- データ（5週間ハードコード） ---------- */
+/* ===== データ ===== */
 const PLANS = [
   {week:1, bed:"0:15",  wake:"8:45", advice:"起床後すぐに朝日を浴びる"},
   {week:2, bed:"23:30", wake:"8:00", advice:"寝る前に温かいノンカフェインドリンクを飲む"},
@@ -144,38 +174,86 @@ const PLANS = [
   {week:4, bed:"22:15", wake:"6:30", advice:"朝の楽しみ・ご褒美を用意する"},
   {week:5, bed:"22:00", wake:"6:00", advice:"週末も同じ時間に起きる"},
 ];
-const ROUTINES = [
-  "カモミールティーを飲む",
-  "ぬるめのお風呂に入る",
-  "就寝1時間前にスマホを置く",
-  "部屋を暗くする",
-  "軽くストレッチをする",
-];
+const DEFAULT_ROUTINES = ["カモミールティーを飲む","ぬるめのお風呂に入る","就寝1時間前にスマホを置く","部屋を暗くする","軽くストレッチをする"];
 
-/* ---------- 保存（localStorage、不可ならメモリにフォールバック） ---------- */
+/* ===== 保存（localStorage、不可ならメモリ） ===== */
 const mem = {};
 const store = {
-  get(k, def){ try{ const v=localStorage.getItem(k); return v==null?def:JSON.parse(v);}catch(e){ return (k in mem)?mem[k]:def; } },
-  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){ mem[k]=v; } },
+  get(k,def){ try{ const v=localStorage.getItem(k); return v==null?def:JSON.parse(v);}catch(e){ return (k in mem)?mem[k]:def; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } },
 };
 
-/* ---------- 日付ヘルパ ---------- */
-const dayKey = (d=new Date())=>{ const z=new Date(d); z.setHours(0,0,0,0);
-  return z.getFullYear()+"-"+String(z.getMonth()+1).padStart(2,"0")+"-"+String(z.getDate()).padStart(2,"0"); };
+/* ===== 日付・時刻ヘルパ ===== */
 const startOfDay = d=>{ const z=new Date(d); z.setHours(0,0,0,0); return z; };
+const dayKey = (d=new Date())=>{ const z=startOfDay(d);
+  return z.getFullYear()+"-"+String(z.getMonth()+1).padStart(2,"0")+"-"+String(z.getDate()).padStart(2,"0"); };
 const daysBetween = (a,b)=> Math.round((startOfDay(b)-startOfDay(a))/86400000);
+const parseHM = s=>{ const [h,m]=s.split(":").map(Number); return {h,m}; };
+const nextOccur = (h,m)=>{ const t=new Date(); t.setHours(h,m,0,0); if(t<=new Date()) t.setDate(t.getDate()+1); return t; };
 
-/* ---------- アイコン ---------- */
-const Check = ()=>(<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
-const HomeIc = ({a})=>(<svg viewBox="0 0 24 24" fill={a?"currentColor":"none"} stroke="currentColor" strokeWidth="2"><path d="M3 11l9-8 9 8M5 10v10h14V10" strokeLinejoin="round"/></svg>);
-const CalIc = ({a})=>(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="16" rx="3" fill={a?"currentColor":"none"}/><path d="M3 9h18M8 3v4M16 3v4" strokeLinecap="round"/></svg>);
+/* ===== カレンダー(.ics)生成 ===== */
+function buildICS(plan, weekIdx){
+  const pad=n=>String(n).padStart(2,"0");
+  const flo=d=>`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+  const now=new Date();
+  const stamp=now.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const bed=parseHM(plan.bed), wake=parseHM(plan.wake);
+  const L=[
+    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//MorningShift//JP//","CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",`UID:ms-bed-${now.getTime()}@morningshift`,`DTSTAMP:${stamp}`,`DTSTART:${flo(nextOccur(bed.h,bed.m))}`,"DURATION:PT1M","RRULE:FREQ=DAILY;COUNT=7",`SUMMARY:🌙 目標就寝 (第${weekIdx}週)`,"DESCRIPTION:MorningShift — そろそろ眠る時間です",
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:就寝の時間です","TRIGGER:PT0S","END:VALARM",
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:就寝1時間前。準備を始めましょう","TRIGGER:-PT1H","END:VALARM",
+    "END:VEVENT",
+    "BEGIN:VEVENT",`UID:ms-wake-${now.getTime()}@morningshift`,`DTSTAMP:${stamp}`,`DTSTART:${flo(nextOccur(wake.h,wake.m))}`,"DURATION:PT1M","RRULE:FREQ=DAILY;COUNT=7",`SUMMARY:☀️ 目標起床 (第${weekIdx}週)`,"DESCRIPTION:MorningShift — 起きる時間です。朝日を浴びましょう",
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:起床時間です","TRIGGER:PT0S","END:VALARM",
+    "END:VEVENT","END:VCALENDAR"
+  ];
+  return L.join("\r\n");
+}
+function downloadFile(name, text, type){
+  try{
+    const blob=new Blob([text],{type});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download=name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(e){ alert("書き出しに失敗しました。Safariで開いて再度お試しください。"); }
+}
 
-/* ---------- ホーム ---------- */
-function Dashboard({plan, weekIdx, dayNo, onOpenSettings}){
-  const [checks, setChecks] = useState(()=> store.get("routine:"+dayKey(), Array(ROUTINES.length).fill(false)));
-  useEffect(()=>{ store.set("routine:"+dayKey(), checks); }, [checks]);
-  const toggle = i => setChecks(c => c.map((v,j)=> j===i ? !v : v));
-  const doneCount = checks.filter(Boolean).length;
+/* ===== ストリーク計算（起床達成の連続日数） ===== */
+function calcStreak(records){
+  let streak=0; let d=startOfDay(new Date());
+  if(!(records[dayKey(d)] && records[dayKey(d)].woke)) d.setDate(d.getDate()-1);
+  while(records[dayKey(d)] && records[dayKey(d)].woke){ streak++; d.setDate(d.getDate()-1); }
+  return streak;
+}
+
+/* ===== アイコン ===== */
+const Check=()=>(<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const HomeIc=({a})=>(<svg viewBox="0 0 24 24" fill={a?"currentColor":"none"} stroke="currentColor" strokeWidth="2"><path d="M3 11l9-8 9 8M5 10v10h14V10" strokeLinejoin="round"/></svg>);
+const ChartIc=({a})=>(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" strokeLinecap="round"/></svg>);
+const CalIc=({a})=>(<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="16" rx="3" fill={a?"currentColor":"none"}/><path d="M3 9h18M8 3v4M16 3v4" strokeLinecap="round"/></svg>);
+
+/* ===== ホーム ===== */
+function Dashboard({plan, weekIdx, dayNo, items, records, setRecord, toggleRoutine, updateItems, onOpenSettings, weekStart}){
+  const today=dayKey();
+  const rec=records[today]||{done:{}};
+  const [editing,setEditing]=useState(false);
+  const [draft,setDraft]=useState("");
+  const [now,setNow]=useState(new Date());
+  useEffect(()=>{ const id=setInterval(()=>setNow(new Date()),30000); return ()=>clearInterval(id); },[]);
+
+  const doneCount=items.filter(it=>rec.done && rec.done[it.id]).length;
+  const streak=calcStreak(records);
+
+  // 就寝までのカウントダウン
+  const bed=parseHM(plan.bed); const bedDt=nextOccur(bed.h,bed.m);
+  let cd=Math.max(0,Math.floor((bedDt-now)/60000)); const cdh=Math.floor(cd/60), cdm=cd%60;
+
+  const move=(i,dir)=>{ const j=i+dir; if(j<0||j>=items.length) return; const a=[...items]; [a[i],a[j]]=[a[j],a[i]]; updateItems(a); };
+  const rename=(id,text)=> updateItems(items.map(it=>it.id===id?{...it,text}:it));
+  const remove=id=> updateItems(items.filter(it=>it.id!==id));
+  const add=()=>{ const t=draft.trim(); if(!t) return; updateItems([...items,{id:"r"+Date.now(),text:t}]); setDraft(""); };
 
   return (
     <div>
@@ -185,49 +263,127 @@ function Dashboard({plan, weekIdx, dayNo, onOpenSettings}){
       </div>
 
       <div className="hero">
-        <div className="sun" style={{transform:`translateY(${(5-weekIdx)*7}px) scale(${0.8+weekIdx*0.05})`,
-             filter:`brightness(${0.85+weekIdx*0.06})`}}/>
+        <div className="sun" style={{transform:`translateY(${(5-weekIdx)*7}px) scale(${0.8+weekIdx*0.05})`,filter:`brightness(${0.85+weekIdx*0.06})`}}/>
         <div className="eyebrow">Phase</div>
-        <div className="phase">第<span>{weekIdx}</span>週<span style={{fontSize:'24px'}}> / 5</span></div>
+        <div className="phase">第<span>{weekIdx}</span>週<span style={{fontSize:"23px"}}> / 5</span></div>
         <div className="dayline">プログラム {dayNo} 日目 ・ 全35日</div>
         <div className="track"><i style={{width:`${Math.min(dayNo/35*100,100)}%`}}/></div>
       </div>
 
       <div className="times">
-        <div className="tcard">
-          <div className="lab">🌙 目標就寝</div>
-          <div className="val">{plan.bed}</div>
+        <div className="tcard"><div className="lab">🌙 目標就寝</div><div className="val">{plan.bed}</div></div>
+        <div className="tcard"><div className="lab">☀️ 目標起床</div><div className="val">{plan.wake}</div></div>
+      </div>
+      <div className="countdown">就寝まであと <b>{cdh}時間{cdm}分</b></div>
+
+      {/* アラーム */}
+      <div className="card alarm">
+        <div className="row">
+          <span className="clock">⏰</span>
+          <div>
+            <div className="sec-h" style={{margin:0}}>起床アラーム</div>
+            <div style={{fontSize:13,color:"var(--ink-dim)"}}>今週の起床目標 <b className="big" style={{fontSize:18}}>{plan.wake}</b></div>
+          </div>
         </div>
-        <div className="tcard">
-          <div className="lab">☀️ 目標起床</div>
-          <div className="val">{plan.wake}</div>
-        </div>
+        <p>確実に起きるなら、この時刻を<b>iPhoneの「時計」アプリ</b>のアラームに設定するのが一番です（時刻が変わるのは週初めだけ）。下のボタンで就寝・起床の通知をカレンダーにまとめて追加もできます。</p>
+        <button className="btn primary" onClick={()=>downloadFile("morningshift.ics", buildICS(plan,weekIdx), "text/calendar;charset=utf-8")}>📅 今週の通知をカレンダーに追加</button>
       </div>
 
+      {/* アドバイス */}
       <div className="card advice">
         <div className="ic">💡</div>
-        <div>
-          <div className="h">今週のアドバイス</div>
-          <div className="t">{plan.advice}</div>
-        </div>
+        <div><div className="h">今週のアドバイス</div><div className="t">{plan.advice}</div></div>
       </div>
 
-      <div style={{marginTop:22}}>
-        <div className="sec-h">今夜のルーティン　<span style={{fontFamily:'var(--body)',fontSize:13,color:'var(--ink-dim)',fontWeight:500}}>{doneCount}/{ROUTINES.length}</span></div>
-        <div className="card routine">
-          {ROUTINES.map((r,i)=>(
-            <div key={i} className={"ritem"+(checks[i]?" done":"")} onClick={()=>toggle(i)}>
-              <div className={"check"+(checks[i]?" on":"")}>{checks[i] && <Check/>}</div>
-              <div className="lbl">{r}</div>
+      {/* ルーティン（編集可） */}
+      <div className="card">
+        <div className="sec-h">
+          <span>今夜のルーティン {!editing && <span className="mini">{doneCount}/{items.length}</span>}</span>
+          <button className="editbtn" onClick={()=>setEditing(e=>!e)}>{editing?"完了":"編集"}</button>
+        </div>
+
+        {!editing ? (
+          <div className="routine">
+            {items.map(it=>{ const on=!!(rec.done && rec.done[it.id]); return (
+              <div key={it.id} className={"ritem"+(on?" done":"")} onClick={()=>toggleRoutine(today,it.id)}>
+                <div className={"check"+(on?" on":"")}>{on && <Check/>}</div>
+                <div className="lbl">{it.text}</div>
+              </div>);})}
+            {items.length===0 && <div style={{color:"var(--ink-faint)",fontSize:14,padding:"8px 0"}}>「編集」から項目を追加してください。</div>}
+          </div>
+        ) : (
+          <div>
+            {items.map((it,i)=>(
+              <div key={it.id} className="erow">
+                <input value={it.text} onChange={e=>rename(it.id,e.target.value)} />
+                <button className="icobtn" onClick={()=>move(i,-1)} aria-label="上へ">↑</button>
+                <button className="icobtn" onClick={()=>move(i,1)} aria-label="下へ">↓</button>
+                <button className="icobtn del" onClick={()=>remove(it.id)} aria-label="削除">×</button>
+              </div>
+            ))}
+            <div className="addrow">
+              <input value={draft} onChange={e=>setDraft(e.target.value)} placeholder="新しいルーティンを追加…" onKeyDown={e=>e.key==="Enter"&&add()} />
+              <button onClick={add}>＋</button>
             </div>
-          ))}
+          </div>
+        )}
+      </div>
+
+      {/* 今日の達成記録 */}
+      <div className="card">
+        <div className="streak">
+          <span className="flame">{streak>0?"🔥":"🌙"}</span>
+          <div><div className="n">{streak}<span style={{fontSize:14,fontFamily:"var(--body)",color:"var(--ink-dim)"}}> 日連続</span></div>
+          <div className="t">起床目標を達成し続けた日数</div></div>
+        </div>
+        <div className="ach">
+          <div className={"achbtn"+(rec.slept?" on":"")} onClick={()=>setRecord(today,{slept:!rec.slept})}>
+            <div className="e">🌙</div><div className="l">{rec.slept?"就寝できた":"目標どおり就寝"}</div>
+          </div>
+          <div className={"achbtn"+(rec.woke?" on":"")} onClick={()=>setRecord(today,{woke:!rec.woke})}>
+            <div className="e">☀️</div><div className="l">{rec.woke?"起きられた":"目標どおり起床"}</div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ---------- スケジュール ---------- */
+/* ===== 進捗（35日グリッド） ===== */
+function Progress({startISO, records, dayNo}){
+  const start=new Date(startISO);
+  const cells=Array.from({length:35},(_,i)=>{
+    const date=new Date(start); date.setDate(date.getDate()+i);
+    const k=dayKey(date); const rec=records[k];
+    const isToday=k===dayKey(); const isPast=startOfDay(date)<startOfDay(new Date());
+    let cls="future"; if(rec&&rec.woke) cls="hit"; else if(isToday) cls="today"; else if(isPast) cls="miss";
+    return {n:i+1,cls};
+  });
+  const hit=cells.filter(c=>c.cls==="hit").length;
+  const elapsed=Math.min(Math.max(dayNo,1),35);
+  return (
+    <div>
+      <div className="topbar"><div className="wordmark">記録</div></div>
+      <div className="stats">
+        <div className="stat"><div className="n g">{calcStreak(records)}</div><div className="l">連続達成日数 🔥</div></div>
+        <div className="stat"><div className="n">{hit}<span style={{fontSize:16,color:"var(--ink-faint)"}}>/{elapsed}</span></div><div className="l">起床達成 / 経過日数</div></div>
+      </div>
+      <div className="card">
+        <div className="sec-h" style={{marginBottom:14}}>35日間の歩み</div>
+        <div className="grid">
+          {cells.map(c=>(<div key={c.n} className={"cell "+c.cls}>{c.n}</div>))}
+        </div>
+        <div className="legend">
+          <span><i className="dot" style={{background:"linear-gradient(135deg,var(--rose),var(--gold))"}}/>達成</span>
+          <span><i className="dot" style={{background:"rgba(253,246,236,.10)",border:"1px solid var(--gold)"}}/>今日</span>
+          <span><i className="dot" style={{background:"rgba(253,246,236,.06)"}}/>未達/未来</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===== スケジュール ===== */
 function Schedule({weekIdx}){
   return (
     <div>
@@ -246,70 +402,90 @@ function Schedule({weekIdx}){
   );
 }
 
-/* ---------- 設定シート ---------- */
-function Settings({startISO, onSet, onClose}){
-  const start = new Date(startISO);
-  const dayNo = daysBetween(start, new Date())+1;
-  const fmt = d => `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-  const shift = days => { const d=new Date(startISO); d.setDate(d.getDate()+days); onSet(startOfDay(d).toISOString()); };
+/* ===== 設定シート ===== */
+function Settings({startISO, onSetStart, data, onImport, onClose}){
+  const fileRef=useRef();
+  const start=new Date(startISO);
+  const dayNo=Math.max(daysBetween(start,new Date())+1,1);
+  const fmt=d=>`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+  const shift=days=>{ const d=new Date(startISO); d.setDate(d.getDate()+days); onSetStart(startOfDay(d).toISOString()); };
+  const exportData=()=> downloadFile("morningshift-backup.json", JSON.stringify(data,null,2), "application/json");
+  const onFile=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+    r.onload=()=>{ try{ const j=JSON.parse(r.result); onImport(j); alert("データを読み込みました。"); onClose(); }catch(err){ alert("ファイルを読み込めませんでした。"); } };
+    r.readAsText(f); };
   return (
     <div className="sheet-bg" onClick={onClose}>
       <div className="sheet" onClick={e=>e.stopPropagation()}>
         <div className="closebar"/>
         <h3>プログラム設定</h3>
-        <p>開始日：{fmt(start)}（現在 {dayNo} 日目 / 第{Math.min(Math.max(Math.floor((dayNo-1)/7)+1,1),5)}週）<br/>
-        週は開始日からの経過日数で自動更新されます。</p>
-        <button className="btn primary" onClick={()=>{ onSet(startOfDay(new Date()).toISOString()); onClose(); }}>今日から再スタート</button>
+        <p>開始日：{fmt(start)}（現在 {dayNo} 日目）<br/>週は開始日からの経過日数で自動更新されます。</p>
+        <button className="btn primary" onClick={()=>{ onSetStart(startOfDay(new Date()).toISOString()); onClose(); }}>今日から再スタート</button>
         <div className="nudge">
           <button className="btn ghost" onClick={()=>shift(7)}>← 開始を1週遅らせる</button>
           <button className="btn ghost" onClick={()=>shift(-7)}>1週進める（確認用）→</button>
         </div>
-        <button className="btn ghost" style={{marginTop:14}} onClick={onClose}>閉じる</button>
+        <div className="divider"/>
+        <h3>バックアップ</h3>
+        <p>記録は端末内に保存されます。機種変更や万一に備え、書き出して保管できます。</p>
+        <button className="btn ghost" onClick={exportData}>⬇️ データを書き出す（JSON）</button>
+        <button className="btn ghost" onClick={()=>fileRef.current.click()}>⬆️ データを読み込む</button>
+        <input ref={fileRef} type="file" accept="application/json,.json" style={{display:"none"}} onChange={onFile} />
+        <div className="divider"/>
+        <button className="btn ghost" onClick={onClose}>閉じる</button>
       </div>
     </div>
   );
 }
 
-/* ---------- ルート ---------- */
+/* ===== ルート ===== */
 function App(){
-  const [tab, setTab] = useState("home");
-  const [showSet, setShowSet] = useState(false);
-  const [startISO, setStartISO] = useState(()=>{
-    let s = store.get("startDate", null);
-    if(!s){ s = startOfDay(new Date()).toISOString(); store.set("startDate", s); }
-    return s;
+  const [tab,setTab]=useState("home");
+  const [showSet,setShowSet]=useState(false);
+  const [data,setData]=useState(()=>{
+    let s=store.get("startDate",null);
+    if(!s){ s=startOfDay(new Date()).toISOString(); }
+    const items=store.get("routineItems", DEFAULT_ROUTINES.map((t,i)=>({id:"r"+i,text:t})));
+    const records=store.get("records",{});
+    return {startDate:s, routineItems:items, records};
   });
-  const setStart = iso => { setStartISO(iso); store.set("startDate", iso); };
+  useEffect(()=>store.set("startDate",data.startDate),[data.startDate]);
+  useEffect(()=>store.set("routineItems",data.routineItems),[data.routineItems]);
+  useEffect(()=>store.set("records",data.records),[data.records]);
 
-  const dayNo = Math.max(daysBetween(new Date(startISO), new Date())+1, 1);
-  const weekIdx = Math.min(Math.max(Math.floor((dayNo-1)/7)+1, 1), PLANS.length);
-  const plan = PLANS[weekIdx-1];
+  const setStart=iso=>setData(d=>({...d,startDate:iso}));
+  const updateItems=items=>setData(d=>({...d,routineItems:items}));
+  const setRecord=(k,patch)=>setData(d=>({...d,records:{...d.records,[k]:{...(d.records[k]||{done:{}}),...patch}}}));
+  const toggleRoutine=(k,id)=>setData(d=>{ const rec=d.records[k]||{done:{}}; const done={...(rec.done||{})}; done[id]=!done[id];
+    return {...d,records:{...d.records,[k]:{...rec,done}}}; });
+  const onImport=j=>{ if(j&&j.startDate&&j.routineItems&&j.records) setData({startDate:j.startDate,routineItems:j.routineItems,records:j.records}); else alert("対応していないファイルです。"); };
+
+  const dayNo=Math.max(daysBetween(new Date(data.startDate),new Date())+1,1);
+  const weekIdx=Math.min(Math.max(Math.floor((dayNo-1)/7)+1,1),PLANS.length);
+  const plan=PLANS[weekIdx-1];
 
   return (
     <div className={"app w"+weekIdx}>
-      {tab==="home"
-        ? <Dashboard plan={plan} weekIdx={weekIdx} dayNo={dayNo} onOpenSettings={()=>setShowSet(true)}/>
-        : <Schedule weekIdx={weekIdx}/>}
+      {tab==="home" && <Dashboard plan={plan} weekIdx={weekIdx} dayNo={dayNo} items={data.routineItems}
+        records={data.records} setRecord={setRecord} toggleRoutine={toggleRoutine} updateItems={updateItems}
+        onOpenSettings={()=>setShowSet(true)} />}
+      {tab==="progress" && <Progress startISO={data.startDate} records={data.records} dayNo={dayNo} />}
+      {tab==="schedule" && <Schedule weekIdx={weekIdx} />}
 
       <nav className="tabbar">
-        <button className={"tab"+(tab==="home"?" active":"")} onClick={()=>setTab("home")}>
-          <HomeIc a={tab==="home"}/>ホーム
-        </button>
-        <button className={"tab"+(tab==="schedule"?" active":"")} onClick={()=>setTab("schedule")}>
-          <CalIc a={tab==="schedule"}/>スケジュール
-        </button>
+        <button className={"tab"+(tab==="home"?" active":"")} onClick={()=>setTab("home")}><HomeIc a={tab==="home"}/>ホーム</button>
+        <button className={"tab"+(tab==="progress"?" active":"")} onClick={()=>setTab("progress")}><ChartIc a={tab==="progress"}/>記録</button>
+        <button className={"tab"+(tab==="schedule"?" active":"")} onClick={()=>setTab("schedule")}><CalIc a={tab==="schedule"}/>プラン</button>
       </nav>
 
-      {showSet && <Settings startISO={startISO} onSet={setStart} onClose={()=>setShowSet(false)}/>}
+      {showSet && <Settings startISO={data.startDate} onSetStart={setStart} data={data} onImport={onImport} onClose={()=>setShowSet(false)} />}
     </div>
   );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 
-/* Service Worker（オフライン対応・配信時のみ有効） */
 if("serviceWorker" in navigator){
-  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
+  window.addEventListener("load",()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
 }
 </script>
 </body>
